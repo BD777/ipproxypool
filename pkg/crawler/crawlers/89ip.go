@@ -18,25 +18,30 @@ type Crawler89IP struct {
 	session *grequests.Session
 }
 
-func (c *Crawler89IP) Crawl() []IPProxyItem {
-	const MaxPage = 3
+func (c *Crawler89IP) Crawl() <-chan IPProxyItem {
+	const MaxPage = 100
 
-	var resp []IPProxyItem
+	ch := make(chan IPProxyItem)
 
-	for page := 1; page <= MaxPage; page++ {
-		items, err := c.crawlPage(page)
-		if err != nil {
-			log.Fatalf("failed to crawl page %d: %v", page, err)
-			return resp
+	go func() {
+		defer close(ch)
+		for page := 1; page <= MaxPage; page++ {
+			items, err := c.crawlPage(page)
+			if err != nil {
+				log.Fatalf("failed to crawl page %d: %v", page, err)
+				return
+			}
+			if len(items) == 0 {
+				break
+			}
+
+			for _, item := range items {
+				ch <- item
+			}
 		}
-		if len(items) == 0 {
-			break
-		}
+	}()
 
-		resp = append(resp, items...)
-	}
-
-	return resp
+	return ch
 }
 
 func (c *Crawler89IP) newSession() {
@@ -121,10 +126,6 @@ func (c *Crawler89IP) crawlPage(page int) ([]IPProxyItem, error) {
 		return nil, fmt.Errorf("failed to parse html: %w", err)
 	}
 
-	for _, item := range resp.List {
-		item.Clean()
-	}
-
 	return resp.Items(), nil
 }
 
@@ -135,6 +136,7 @@ type Crawler89IPResponse struct {
 func (c *Crawler89IPResponse) Items() []IPProxyItem {
 	items := make([]IPProxyItem, 0)
 	for _, item := range c.List {
+		item.Clean()
 		items = append(items, item)
 	}
 	return items

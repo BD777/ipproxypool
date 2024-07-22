@@ -11,5 +11,5 @@ type IPProxyItem interface {
 }
 
 type IPProxyCrawler interface {
-	Crawl() []IPProxyItem
+	Crawl() <-chan IPProxyItem
 }
