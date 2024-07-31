@@ -2,10 +2,11 @@ package main
 
 import (
 	"flag"
-	"log"
 
 	"github.com/BD777/ipproxypool/pkg/config"
+	"github.com/BD777/ipproxypool/pkg/crawler"
 	"github.com/BD777/ipproxypool/pkg/service"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -15,9 +16,12 @@ func main() {
 	flag.StringVar(&cfg.Mode, "mode", cfg.Mode, "debug, release")
 	flag.StringVar(&cfg.Host, "host", cfg.Host, "")
 	flag.IntVar(&cfg.Port, "port", cfg.Port, "")
+	flag.Int64Var(&cfg.CountThreshold, "count", cfg.CountThreshold, "")
 	flag.Parse()
 
-	log.Printf("service runs with config: %+v", cfg)
+	logrus.Infof("service runs with config: %+v", cfg)
+
+	go crawler.Run(cfg)
 
 	s := service.NewHTTPServer(cfg)
 	s.ListenAndServe()

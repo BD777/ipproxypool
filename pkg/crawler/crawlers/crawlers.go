@@ -11,5 +11,10 @@ type IPProxyItem interface {
 }
 
 type IPProxyCrawler interface {
+	Name() string
 	Crawl() <-chan IPProxyItem
+}
+
+var Crawlers = []IPProxyCrawler{
+	NewCrawler89IP(),
 }

@@ -9,6 +9,6 @@ func TestCrawler89IP_crawlPage(t *testing.T) {
 	c := &Crawler89IP{}
 	ch := c.Crawl()
 	for item := range ch {
-		t.Logf("%+v", item)
+		t.Logf("%+v, updatedAt:%d", item, item.GetUpdatedAt())
 	}
 }

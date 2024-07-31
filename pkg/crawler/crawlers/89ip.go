@@ -2,7 +2,6 @@ package crawlers
 
 import (
 	"fmt"
-	"log"
 	"net/http"
 	"regexp"
 	"strings"
@@ -12,23 +11,32 @@ import (
 	browser "github.com/EDDYCJY/fake-useragent"
 	"github.com/levigross/grequests"
 	"github.com/robertkrimen/otto"
+	"github.com/sirupsen/logrus"
 )
 
 type Crawler89IP struct {
 	session *grequests.Session
 }
 
+func NewCrawler89IP() *Crawler89IP {
+	return &Crawler89IP{}
+}
+
+func (c *Crawler89IP) Name() string {
+	return "89ip"
+}
+
 func (c *Crawler89IP) Crawl() <-chan IPProxyItem {
 	const MaxPage = 100
 
-	ch := make(chan IPProxyItem)
+	ch := make(chan IPProxyItem, 100)
 
 	go func() {
 		defer close(ch)
 		for page := 1; page <= MaxPage; page++ {
 			items, err := c.crawlPage(page)
 			if err != nil {
-				log.Fatalf("failed to crawl page %d: %v", page, err)
+				logrus.Errorf("failed to crawl page %d: %v", page, err)
 				return
 			}
 			if len(items) == 0 {
@@ -38,6 +46,8 @@ func (c *Crawler89IP) Crawl() <-chan IPProxyItem {
 			for _, item := range items {
 				ch <- item
 			}
+
+			time.Sleep(time.Second * 3) // take a break
 		}
 	}()
 
@@ -57,7 +67,7 @@ func (c *Crawler89IP) crawlPage(page int) ([]IPProxyItem, error) {
 		c.newSession()
 	}
 
-	log.Printf("[Crawler89IP] start to crawl page %d", page)
+	logrus.Infof("[Crawler89IP] start to crawl page %d", page)
 
 	httpResp, err := c.session.Get(url, nil)
 	if err != nil {
@@ -90,7 +100,7 @@ func (c *Crawler89IP) crawlPage(page int) ([]IPProxyItem, error) {
 		}
 
 		if val, err := vm.Call(funcName, nil, param); err == nil {
-			log.Printf("result: %s", val)
+			logrus.Infof("result: %s", val)
 			// re.match r'https_ydclearance=(.*?);' and extract $1
 			re = regexp.MustCompile(`https_ydclearance=(.*?);`)
 			matches = re.FindStringSubmatch(val.String())
@@ -107,7 +117,7 @@ func (c *Crawler89IP) crawlPage(page int) ([]IPProxyItem, error) {
 				},
 			})
 
-			log.Printf("set cookie: https_ydclearance=%s", ydclearance)
+			logrus.Infof("set cookie: https_ydclearance=%s", ydclearance)
 		}
 
 		httpResp, err = c.session.Get(url, nil)
@@ -183,7 +193,7 @@ func (c *Crawler89IPItem) GetISP() string {
 }
 
 func (c *Crawler89IPItem) GetUpdatedAt() int64 {
-	format := "2006-01-02 15:04:05"
+	format := "2006/01/02 15:04:05"
 	updatedAt := strings.Trim(c.UpdatedAt, " ")
 	tz := time.FixedZone("CST", 8*3600)
 	t, _ := time.ParseInLocation(format, updatedAt, tz)
