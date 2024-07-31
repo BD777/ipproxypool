@@ -144,7 +144,7 @@ type Crawler89IPResponse struct {
 }
 
 func (c *Crawler89IPResponse) Items() []IPProxyItem {
-	items := make([]IPProxyItem, 0)
+	items := make([]IPProxyItem, 0, len(c.List))
 	for _, item := range c.List {
 		item.Clean()
 		items = append(items, item)
