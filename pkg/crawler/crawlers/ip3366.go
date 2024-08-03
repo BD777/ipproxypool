@@ -56,6 +56,21 @@ func (c *CralwerIP3399) Crawl() <-chan IPProxyItem {
 	return ch
 }
 
+func (c *CralwerIP3399) Detect() bool {
+	for page := 1; page <= 2; page++ {
+		resp, err := c.crawlPage(page)
+		if err != nil {
+			logrus.Errorf("failed to detect ip3366: %v", err)
+			return false
+		}
+		if len(resp) == 0 {
+			logrus.Errorf("failed to detect ip3366: no items in page %d", page)
+			return false
+		}
+	}
+	return true
+}
+
 func (c *CralwerIP3399) newSession() {
 	c.session = grequests.NewSession(&grequests.RequestOptions{
 		UserAgent: browser.Chrome(),

@@ -11,8 +11,12 @@ type IPProxyItem interface {
 }
 
 type IPProxyCrawler interface {
+	// Name returns the name of the crawler.
 	Name() string
+	// Crawl returns a channel that yields IPProxyItem.
 	Crawl() <-chan IPProxyItem
+	// Detect returns true if the crawler is able to fetch proxies.
+	Detect() bool
 }
 
 var Crawlers = []IPProxyCrawler{

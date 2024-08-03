@@ -54,6 +54,21 @@ func (c *Crawler89IP) Crawl() <-chan IPProxyItem {
 	return ch
 }
 
+func (c *Crawler89IP) Detect() bool {
+	for page := 1; page <= 2; page++ {
+		resp, err := c.crawlPage(page)
+		if err != nil {
+			logrus.Errorf("failed to detect 89ip: %v", err)
+			return false
+		}
+		if len(resp) == 0 {
+			logrus.Errorf("failed to detect 89ip: no items in page %d", page)
+			return false
+		}
+	}
+	return true
+}
+
 func (c *Crawler89IP) newSession() {
 	c.session = grequests.NewSession(&grequests.RequestOptions{
 		UserAgent: browser.Chrome(),
