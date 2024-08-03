@@ -9,8 +9,8 @@ Collect and maintain IP proxy data, and provide a RESTful API for access.
 ## Crawlers Status
 | Name | Status |
 | --- | --- |
-| [89ip](https://www.89ip.cn) | [![Continuous Integration](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_89ip.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_89ip.yml) |
-| [ip3366](http://www.ip3366.net/free) | [![Continuous Integration](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml) |
+| [89ip](https://www.89ip.cn) | [![Detect Crawler 89ip](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_89ip.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_89ip.yml) |
+| [ip3366](http://www.ip3366.net/free) | [![Detect Crawler ip3366](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml) |
 
 ## Features
 1. Crawl IP proxies from the web and store them in a SQLite database.
