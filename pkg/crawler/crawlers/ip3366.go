@@ -68,6 +68,7 @@ func (c *CralwerIP3399) Detect() bool {
 			logrus.Errorf("failed to detect ip3366: no items in page %d", page)
 			return false
 		}
+		logrus.Infof("detected %d items in page %d", len(resp), page)
 	}
 	return true
 }

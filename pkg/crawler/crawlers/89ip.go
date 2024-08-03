@@ -66,6 +66,7 @@ func (c *Crawler89IP) Detect() bool {
 			logrus.Errorf("failed to detect 89ip: no items in page %d", page)
 			return false
 		}
+		logrus.Infof("detected %d items in page %d", len(resp), page)
 	}
 	return true
 }

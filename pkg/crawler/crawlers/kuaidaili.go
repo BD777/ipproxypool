@@ -70,6 +70,7 @@ func (c *CrawlerKuaiDaiLi) Detect() bool {
 			logrus.Errorf("failed to detect kuaidaili: no items in page %d", page)
 			return false
 		}
+		logrus.Infof("detected %d items in page %d", len(resp), page)
 	}
 	return true
 }
