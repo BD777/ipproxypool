@@ -36,6 +36,9 @@ func (c *CralwerIP3399) Crawl() <-chan IPProxyItem {
 	go func() {
 		defer close(ch)
 		for page := 1; page <= MaxPage; page++ {
+			if page > 1 {
+				time.Sleep(time.Second * 3) // avoid anti-crawler
+			}
 			items, err := c.crawlPage(page)
 			if err != nil {
 				logrus.Errorf("failed to crawl page %d: %v", page, err)
@@ -48,8 +51,6 @@ func (c *CralwerIP3399) Crawl() <-chan IPProxyItem {
 			for _, item := range items {
 				ch <- item
 			}
-
-			time.Sleep(time.Second * 3) // take a break
 		}
 	}()
 

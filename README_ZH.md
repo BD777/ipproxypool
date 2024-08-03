@@ -12,6 +12,8 @@ Version
 | --- | --- |
 | [89ip](https://www.89ip.cn) | [![Detect Crawler 89ip](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_89ip.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_89ip.yml) |
 | [ip3366](http://www.ip3366.net/free) | [![Detect Crawler ip3366](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml) |
+| [kuaidaili](https://www.kuaidaili.com/free) | [![Detect kuaidaili](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_kuaidaili.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_kuaidaili.yml) |
+
 
 ## Features
 1. 爬取IP代理存储到SQLite中；

@@ -1,4 +1,4 @@
-name: Detect 89ip
+name: Detect kuaidaili
 
 on:
   push:
@@ -21,4 +21,4 @@ jobs:
       run: |
         cd detection/crawler
         go build -o main main.go
-        ./main -n 89ip
+        ./main -n kuaidaili

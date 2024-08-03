@@ -68,7 +68,7 @@ func gatherFromCralers(cfg *config.Config) {
 
 			func() {
 				defer close(ch)
-				for _, c := range crawlers.Crawlers {
+				concurrent.Exec(crawlers.Crawlers, 5, func(c crawlers.IPProxyCrawler) (struct{}, error) {
 					logrus.Infof("start to crawl %s", c.Name())
 					for item := range c.Crawl() {
 						ch <- models.IPProxy{
@@ -81,7 +81,8 @@ func gatherFromCralers(cfg *config.Config) {
 							UpdatedAt: item.GetUpdatedAt(),
 						}
 					}
-				}
+					return struct{}{}, nil
+				})
 			}()
 		}
 

@@ -1,4 +1,4 @@
-name: Detect Crawler ip3366
+name: Detect ip3366
 
 on:
   push:
