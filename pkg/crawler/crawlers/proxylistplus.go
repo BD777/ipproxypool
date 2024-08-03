@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/BD777/ipproxypool/pkg/utils/htmlparser"
+	browser "github.com/EDDYCJY/fake-useragent"
 	"github.com/levigross/grequests"
 	"github.com/sirupsen/logrus"
 )
@@ -73,7 +74,9 @@ func (c *CrawlerProxyListPlus) Detect() bool {
 }
 
 func (c *CrawlerProxyListPlus) newSession() {
-	c.session = grequests.NewSession(nil)
+	c.session = grequests.NewSession(&grequests.RequestOptions{
+		UserAgent: browser.Chrome(),
+	})
 }
 
 func (c *CrawlerProxyListPlus) crawlPage(page int) ([]*ProxyListPlusItem, error) {
