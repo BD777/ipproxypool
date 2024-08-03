@@ -23,4 +23,5 @@ var Crawlers = []IPProxyCrawler{
 	NewCrawler89IP(),
 	NewCralwerIP3399(),
 	NewKuaiDaiLi(),
+	NewCrawlerProxyListPlus(),
 }

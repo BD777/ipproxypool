@@ -1,0 +1,24 @@
+name: Detect proxylistplus
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  schedule:
+    - cron:  '0 3 * * *'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.21'
+    - name: Detect proxylistplus
+      run: |
+        cd detection/crawler
+        go build -o main main.go
+        ./main -n proxylistplus

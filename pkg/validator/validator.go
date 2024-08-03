@@ -57,7 +57,7 @@ func checkHTTPProxy(testURL, ip string, port int) (models.ProxyType, bool) {
 		RequestTimeout: time.Second * 5,
 	})
 	if err != nil {
-		// logrus.Errorf("failed to check proxy %s:%d: %v", ip, port, err)
+		// logrus.Errorf("failed to check proxy %s:%d %v", ip, port, err)
 		return 0, false
 	}
 

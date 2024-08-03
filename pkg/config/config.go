@@ -14,7 +14,7 @@ var DefaultConfig = &Config{
 	Mode:           "release",
 	Host:           "0.0.0.0",
 	Port:           9002,
-	CountThreshold: 50,
+	CountThreshold: 100,
 	CrawlSleepSec:  30,
 	DetectSleepSec: 300,
 }
