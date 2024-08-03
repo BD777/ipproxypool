@@ -1,4 +1,5 @@
 # ipproxypool
+Version
 [En](https://github.com/BD777/ipproxypool/blob/main/README.md)
 |
 [Zh](https://github.com/BD777/ipproxypool/blob/main/README_ZH.md)
