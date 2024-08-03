@@ -21,4 +21,4 @@ jobs:
       run: |
         cd detection/crawler
         go build -o main main.go
-        ./main -n 89ip
+        ./main -n ip3366

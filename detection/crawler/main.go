@@ -18,10 +18,13 @@ func main() {
 			if !c.Detect() {
 				logrus.Infof("crawler %s is not able to fetch proxies", c.Name())
 				os.Exit(1)
+			} else {
+				logrus.Infof("crawler %s is able to fetch proxies", c.Name())
+				os.Exit(0)
 			}
 		}
 	}
 
-	logrus.Infof("crawler %s is able to fetch proxies", *name)
-	os.Exit(0)
+	logrus.Errorf("crawler %s not found", *name)
+	os.Exit(1)
 }

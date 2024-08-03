@@ -1,5 +1,10 @@
 # ipproxypool
-Collect and maintain IP proxy data, and provide a RESTful API for access.
+[En](https://github.com/BD777/ipproxypool/blob/main/README.md)
+|
+[Zh](https://github.com/BD777/ipproxypool/blob/main/README_ZH.md)
+
+
+爬取并维护IP代理，提供RESTful API用于读写
 
 ## Crawlers Status
 | Name | Status |
@@ -8,25 +13,25 @@ Collect and maintain IP proxy data, and provide a RESTful API for access.
 | [ip3366](http://www.ip3366.net/free) | [![Continuous Integration](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml) |
 
 ## Features
-1. Crawl IP proxies from the web and store them in a SQLite database.
-2. Periodically check if the proxies in the database are still valid and remove them if they are invalid.
-3. Provide RESTful APIs for access.
+1. 爬取IP代理存储到SQLite中；
+2. 定期检测数据库中的代理，将不可用的移除；
+3. RESTful API；
 
 ### API
 #### **GET** `/`
-Query proxies.
+查询代理。
 
 | param | desc | sample |
 | -- | -- | -- |
-| type | proxy type<br/>1: transparent<br/>2: annoymous<br/>3: high annoymous | 3 |
+| type | proxy type<br/>1: 透明<br/>2: 匿名<br/>3: 高匿 | 3 |
 | protocol | protocol type<br/>1: HTTP<br/>2: HTTPS<br/>3: Both | 3 |
 | limit | limit count | 10 |
 
 #### **GET** `/count`
-Query total count of proxies.
+查询db中的总数。
 
 #### **POST** `/delete`
-Delete proxy from database.
+删掉一个。
 
 | param | desc | sample |
 | -- | -- | -- |
@@ -47,5 +52,6 @@ type Config struct {
 ```
 
 ## Run
+`go mod tidy`
 `go run cmd/main.go`
 
