@@ -1,6 +1,13 @@
 package utils
 
-import "strings"
+import (
+	"bytes"
+	"io"
+	"strings"
+
+	"golang.org/x/text/encoding/simplifiedchinese"
+	"golang.org/x/text/transform"
+)
 
 var ISP = []string{
 	"电信",
@@ -24,4 +31,10 @@ func SplitRegionISP(region string) (string, string) {
 		}
 	}
 	return region, ""
+}
+
+func GBK2UTF8(b []byte) string {
+	reader := transform.NewReader(bytes.NewReader(b), simplifiedchinese.GB18030.NewDecoder())
+	respBytes, _ := io.ReadAll(reader)
+	return string(respBytes)
 }

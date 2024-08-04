@@ -1,9 +1,7 @@
 package crawlers
 
 import (
-	"bytes"
 	"fmt"
-	"io/ioutil"
 	"strings"
 	"time"
 
@@ -12,8 +10,6 @@ import (
 	browser "github.com/EDDYCJY/fake-useragent"
 	"github.com/levigross/grequests"
 	"github.com/sirupsen/logrus"
-	"golang.org/x/text/encoding/simplifiedchinese"
-	"golang.org/x/text/transform"
 )
 
 type CralwerIP3399 struct {
@@ -98,13 +94,9 @@ func (c *CralwerIP3399) crawlPage(page int) ([]IPProxyItem, error) {
 	}
 
 	resp := &CralwerIP3399Response{}
-	reader := transform.NewReader(bytes.NewReader(httpResp.Bytes()), simplifiedchinese.GB18030.NewDecoder())
-	respBytes, err := ioutil.ReadAll(reader)
-	if err != nil {
-		return nil, fmt.Errorf("failed to read response: %w", err)
-	}
+	content := utils.GBK2UTF8(httpResp.Bytes())
 
-	err = htmlparser.ParseHTML(string(respBytes), resp)
+	err = htmlparser.ParseHTML(content, resp)
 	if err != nil {
 		return nil, fmt.Errorf("failed to parse html: %w", err)
 	}
