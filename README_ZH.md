@@ -8,13 +8,13 @@ Version
 爬取并维护IP代理，提供RESTful API用于读写
 
 ## Crawlers Status
-| Name | Status |
-| --- | --- |
-| [89ip](https://www.89ip.cn) | [![Detect Crawler 89ip](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_89ip.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_89ip.yml) |
-| [ip3366](http://www.ip3366.net/free) | [![Detect Crawler ip3366](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml) |
-| [kuaidaili](https://www.kuaidaili.com/free) | [![Detect kuaidaili](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_kuaidaili.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_kuaidaili.yml) |
-| [ProxyListPlus](https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-1) | [![Detect ProxyListPlus](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_proxylistplus.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_proxylistplus.yml) |
-| [zdaye](https://www.zdaye.com/free/) | [![Detect zdaye](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_zdaye.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_zdaye.yml) |
+| Name | Status | Desc |
+| --- | --- | --- |
+| [89ip](https://www.89ip.cn) | [![Detect 89ip](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_89ip.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_89ip.yml) | |
+| [ip3366](http://www.ip3366.net/free) | [![Detect ip3366](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_ip3366.yml) | |
+| [kuaidaili](https://www.kuaidaili.com/free) | [![Detect kuaidaili](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_kuaidaili.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_kuaidaili.yml) | |
+| [ProxyListPlus](https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-1) | [![Detect ProxyListPlus](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_proxylistplus.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_proxylistplus.yml) | |
+| [zdaye](https://www.zdaye.com/free/) | [![Detect zdaye](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_zdaye.yml/badge.svg)](https://github.com/BD777/ipproxypool/actions/workflows/detect_crawler_zdaye.yml) | 非中IP似乎会被block |
 
 
 ## Features
