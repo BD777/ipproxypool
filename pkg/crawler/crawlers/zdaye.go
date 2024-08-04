@@ -6,6 +6,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/BD777/ipproxypool/pkg/utils"
 	"github.com/BD777/ipproxypool/pkg/utils/htmlparser"
 	browser "github.com/EDDYCJY/fake-useragent"
 	"github.com/levigross/grequests"
@@ -101,16 +102,18 @@ func (c *CrawlerZdaye) crawlPage(page int) ([]*ZdayeItem, error) {
 		return nil, fmt.Errorf("failed to crawl page %d: %w", page, err)
 	}
 
-	// // request url
-	// logrus.Infof("url %s", resp.RawResponse.Request.URL)
-	// // request headers
-	// logrus.Infof("headers %v", resp.RawResponse.Request.Header)
-	// // response headers
-	// logrus.Infof("headers %v", resp.RawResponse.Header)
-	// // response status code
-	// logrus.Infof("status code %d", resp.StatusCode)
+	if resp.StatusCode != 200 {
+		// request url
+		logrus.Infof("url %s", resp.RawResponse.Request.URL)
+		// request headers
+		logrus.Infof("headers %v", resp.RawResponse.Request.Header)
+		// response headers
+		logrus.Infof("headers %v", resp.RawResponse.Header)
+		// response status code
+		logrus.Infof("status code %d", resp.StatusCode)
 
-	// logrus.Infof("response %s", utils.GBK2UTF8(resp.Bytes()))
+		logrus.Infof("response %s", utils.GBK2UTF8(resp.Bytes()))
+	}
 
 	items, err := parseZdaye(resp.String())
 	if err != nil {
