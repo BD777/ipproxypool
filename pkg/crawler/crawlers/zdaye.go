@@ -2,7 +2,6 @@ package crawlers
 
 import (
 	"fmt"
-	"net/url"
 	"strconv"
 	"strings"
 	"time"
@@ -56,62 +55,23 @@ func (c *CrawlerZdaye) Crawl() <-chan IPProxyItem {
 }
 
 func (c *CrawlerZdaye) Detect() bool {
-	if c.session == nil {
-		c.newSession()
-	}
+	for page := 1; page <= 2; page++ {
+		if page > 1 {
+			time.Sleep(time.Second * 10) // avoid anti-crawler
+		}
 
-	// It seems that non-Chinese IP addresses will be blocked
-	// use KuaiDaiLi to get Chinese IP addresses
-	k := NewKuaiDaiLi()
-	proxies := k.Crawl()
-
-	for proxy := range proxies {
-		httpProxy, err := url.Parse(fmt.Sprintf("http://%s:%d", proxy.GetIP(), proxy.GetPort()))
+		resp, err := c.crawlPage(page)
 		if err != nil {
-			logrus.Errorf("failed to parse http proxy: %v", err)
-			continue
+			logrus.Errorf("failed to detect zdaye: %v", err)
+			return false
 		}
-		httpsProxy, err := url.Parse(fmt.Sprintf("https://%s:%d", proxy.GetIP(), proxy.GetPort()))
-		if err != nil {
-			logrus.Errorf("failed to parse https proxy: %v", err)
-			continue
+		if len(resp) == 0 {
+			logrus.Errorf("failed to detect zdaye: no items in page %d", page)
+			return false
 		}
-
-		c.session.RequestOptions.Proxies = map[string]*url.URL{
-			"http":  httpProxy,
-			"https": httpsProxy,
-		}
-		c.session.RequestOptions.DialTimeout = time.Second * 5
-
-		ok := func() bool {
-			for page := 1; page <= 2; page++ {
-				if page > 1 {
-					time.Sleep(time.Second * 10) // avoid anti-crawler
-				}
-
-				resp, err := c.crawlPage(page)
-				if err != nil {
-					logrus.Errorf("failed to detect zdaye with proxy %s:%d: %v", proxy.GetIP(), proxy.GetPort(), err)
-					return false
-				}
-				if len(resp) == 0 {
-					logrus.Errorf("failed to detect zdaye with proxy %s:%d: no items in page %d", proxy.GetIP(), proxy.GetPort(), page)
-					return false
-				}
-				logrus.Infof("detected %d items in page %d with proxy %s:%d", len(resp), page, proxy.GetIP(), proxy.GetPort())
-			}
-			logrus.Infof("proxy %s:%d is able to fetch proxies", proxy.GetIP(), proxy.GetPort())
-			return true
-		}()
-		if !ok {
-			logrus.Infof("proxy %s:%d is not able to fetch proxies", proxy.GetIP(), proxy.GetPort())
-		} else {
-			return true
-		}
+		logrus.Infof("detected %d items in page %d", len(resp), page)
 	}
-
-	logrus.Infof("no proxy is able to fetch proxies")
-	return false
+	return true
 }
 
 func (c *CrawlerZdaye) newSession() {
