@@ -2,7 +2,7 @@
 Version
 [En](https://github.com/BD777/ipproxypool/blob/main/README.md)
 |
-[Zh](https://github.com/BD777/ipproxypool/blob/main/README_ZH.md)
+[中文](https://github.com/BD777/ipproxypool/blob/main/README_ZH.md)
 
 Collect and maintain IP proxy data, and provide a RESTful API for access.
 
