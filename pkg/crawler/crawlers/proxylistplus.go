@@ -82,25 +82,31 @@ func (c *CrawlerProxyListPlus) Detect() bool {
 		}
 		c.session.RequestOptions.DialTimeout = time.Second * 5
 
-		for page := 1; page <= 2; page++ {
-			if page > 1 {
-				time.Sleep(time.Second * 3) // avoid anti-crawler
-			}
+		ok := func() bool {
+			for page := 1; page <= 2; page++ {
+				if page > 1 {
+					time.Sleep(time.Second * 3) // avoid anti-crawler
+				}
 
-			resp, err := c.crawlPage(page)
-			if err != nil {
-				logrus.Errorf("failed to detect proxylistplus with proxy %s:%d: %v", proxy.GetIP(), proxy.GetPort(), err)
-				return false
+				resp, err := c.crawlPage(page)
+				if err != nil {
+					logrus.Errorf("failed to detect proxylistplus with proxy %s:%d: %v", proxy.GetIP(), proxy.GetPort(), err)
+					return false
+				}
+				if len(resp) == 0 {
+					logrus.Errorf("failed to detect proxylistplus with proxy %s:%d: no items in page %d", proxy.GetIP(), proxy.GetPort(), page)
+					return false
+				}
+				logrus.Infof("detected %d items in page %d with proxy %s:%d", len(resp), page, proxy.GetIP(), proxy.GetPort())
 			}
-			if len(resp) == 0 {
-				logrus.Errorf("failed to detect proxylistplus with proxy %s:%d: no items in page %d", proxy.GetIP(), proxy.GetPort(), page)
-				return false
-			}
-			logrus.Infof("detected %d items in page %d with proxy %s:%d", len(resp), page, proxy.GetIP(), proxy.GetPort())
+			logrus.Infof("proxy %s:%d is able to fetch proxies", proxy.GetIP(), proxy.GetPort())
+			return true
+		}()
+		if !ok {
+			logrus.Infof("proxy %s:%d is not able to fetch proxies", proxy.GetIP(), proxy.GetPort())
+		} else {
+			return true
 		}
-
-		logrus.Infof("proxy %s:%d is able to fetch proxies", proxy.GetIP(), proxy.GetPort())
-		return true
 	}
 
 	logrus.Infof("no proxy is able to fetch proxies")
