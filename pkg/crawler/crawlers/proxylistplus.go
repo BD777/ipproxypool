@@ -59,8 +59,6 @@ func (c *CrawlerProxyListPlus) Detect() bool {
 		c.newSession()
 	}
 
-	// It seems that non-Chinese IP addresses will be blocked
-	// use KuaiDaiLi to get Chinese IP addresses
 	k := NewKuaiDaiLi()
 	proxies := k.Crawl()
 
@@ -81,6 +79,13 @@ func (c *CrawlerProxyListPlus) Detect() bool {
 			"https": httpsProxy,
 		}
 		c.session.RequestOptions.DialTimeout = time.Second * 5
+
+		resp, err := c.getWith("https://httpbin.org/ip", nil)
+		if err != nil {
+			logrus.Errorf("Failed to get IP via proxy: %v", err)
+		} else {
+			logrus.Infof("Response from IP check: %v", resp.String())
+		}
 
 		ok := func() bool {
 			for page := 1; page <= 2; page++ {
@@ -127,7 +132,7 @@ func (c *CrawlerProxyListPlus) crawlPage(page int) ([]*ProxyListPlusItem, error)
 	logrus.Infof("[CrawlerProxyListPlus] start to crawl page %d", page)
 
 	url := fmt.Sprintf("https://list.proxylistplus.com/Fresh-HTTP-Proxy-List-%d", page)
-	httpResp, err := c.session.Get(url, nil)
+	httpResp, err := c.getWith(url, nil)
 	if err != nil {
 		return nil, err
 	}
@@ -142,6 +147,28 @@ func (c *CrawlerProxyListPlus) crawlPage(page int) ([]*ProxyListPlusItem, error)
 	}
 
 	return resp.List, nil
+}
+
+func (c *CrawlerProxyListPlus) getWith(url string, ro *grequests.RequestOptions) (*grequests.Response, error) {
+	if c.session == nil {
+		c.newSession()
+	}
+
+	// it seems that grequest.session.Get is not working with proxy settings
+	var getFunc func(url string, ro *grequests.RequestOptions) (*grequests.Response, error)
+
+	if ro == nil {
+		ro = &grequests.RequestOptions{}
+	}
+	if len(ro.Proxies) == 0 && len(c.session.RequestOptions.Proxies) > 0 {
+		logrus.Infof("use session proxies: %v", c.session.RequestOptions.Proxies)
+		ro.Proxies = c.session.RequestOptions.Proxies
+		getFunc = grequests.Get
+	} else {
+		getFunc = c.session.Get
+	}
+
+	return getFunc(url, ro)
 }
 
 type ProxyListPlusResponse struct {
